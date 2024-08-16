@@ -1,0 +1,462 @@
+{% extends "registration_base.html" %}
+{% load static %}
+
+{% block title %} GustoMarket {% endblock %}
+
+{% block content %}
+<div class="content-wrapper content-wrapper-bg footer-padding">
+  <h1 class="page-title">Cart</h1>
+  <!-- start inner body section -->
+  <div class="page-content">
+    <!-- start Products header section -->
+    <div class="draft-prduct-top d-flex justify-content-between mb-sm-5 mb-4">
+      <div class="draft-lft-sec d-flex gap-5">
+        <div class="tab-heading">
+          <h3>Products</h3>
+        </div>
+        <div class="serach-bar position-relative d-none d-sm-block">
+          <input class="form-control search" type="search" placeholder="Search product" aria-label="Search">
+          <label class="searchbutton" for="searchleft">
+            <span class="mglass">
+              <span class="search-icn">
+                <img src="{% static 'img/search-icon.png' %}" alt="search">
+              </span>
+            </span>
+          </label>
+        </div>
+      </div>
+      <div class="draft-rgt-sec d-flex gap-3">
+        <button type="button" class="list-btn active"><img src="{% static 'img/list-icon.png' %}" alt="list"></button>
+        <button type="button" class="grid-btn"><img src="{% static 'img/grid-icon.png' %}" alt="grid"></button>
+      </div>
+    </div>
+    <!-- start mobile-serch-secsection -->
+    <div class="mobile-serch-sec d-sm-none">
+      <div class="serach-bar position-relative">
+        <input class="form-control search" type="search" placeholder="Search product" aria-label="Search">
+        <label class="searchbutton" for="searchleft">
+          <span class="mglass">
+            <span class="search-icn">
+              <img src="{% static 'img/search-icon.png' %}" alt="search">
+            </span>
+          </span>
+        </label>
+      </div>
+    </div>
+    <!-- End Products header section -->
+    <div class="product-drat-table">
+      {% for vendor, data in vendors.items %}
+      <div class="data-table-sec show-panel mb-4">
+        <table class="table" style="width: 100%">
+          <thead>
+            <tr>
+              <th>
+                {% if vendor.company.logo %}
+                <img src="{{ vendor.company.logo.url }}" alt="avatar" style="height: 35px; widows: 35px;">
+                {% endif %}
+                <span>by</span><span style="font-size: large;"> {{ vendor.company.company_name }}</span>
+                <img src="{% static 'img/star-icon.png' %}" alt="star"> <span>4.8 (87)</span>
+              </th>
+              <th>
+                <h2>Expected Delivery</h2>
+              </th>
+              <th>
+                <h2>Debit / Credit</h2>
+              </th>
+              <th>
+                <h2>Transportation Fee</h2>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <!-- <p>Purchase order ID: 392323932</p> -->
+              </td>
+              <td>Jul 24, 2023 at 3:55 PM</td>
+              <td></td>
+              <td id="delivery_fee-{{ vendor.id }}">${{ data.delivery_fee }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="data-table-sec show-panel mb-4">
+        <table id="card-tables" class="table dt-responsive nowrap custom-table table-hover appendData"
+          style="width: 100%">
+          <thead>
+            <tr>
+              <th>Product</th>
+              <th>Product #</th>
+              <th>Quantity</th>
+              <th>Price</th>
+              <th>Request Changes</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for cart_item_id, product, quantity, total_price in data.products %}
+            <tr>
+              <td>
+                <div class="product-name-price d-flex align-items-center gap-4">
+                  <div class="prd-img">
+                    {% with photo=product.productphoto_set.first %}
+                    <img src="{{ photo.product_photo.url }}" alt="product list">
+                    {% endwith %}
+                  </div>
+                  <div class="prd-name">
+                    <h4>{{ product.product_title }}</h4>
+                    <p>${{ product.price_transport.amount }}</p>
+                  </div>
+                </div>
+              </td>
+              <!-- <td>{{ product.price_transport.stock_count }}</td> -->
+              <td> {{ product.id }} </td>
+              <td>
+                <div class="qty-container d-flex align-items-center">
+                  <button class="qty-btn-minus btn-primary btn-rounded mr-1" type="button"><i
+                      class="bi bi-dash-lg"></i></button>
+                  <input type="text" name="qty" value="{{ quantity }}" class="input-qty input-rounded" disabled>
+                  <input type="hidden" name="supplier_id" value="{{ vendor.id }}" class="vendorId">
+                  <input type="hidden" name="cart_item_id" value="{{ cart_item_id }}" class="cartItemId">
+                  <input type="hidden" name="product_id" value="{{ product.id }}" class="productId">
+                  <button class="qty-btn-plus btn-primary btn-rounded ml-1" type="button"><i
+                      class="bi bi-plus-lg"></i></button>
+                </div>
+              </td>
+              <td id="total_price-{{ product.id }}"><span class="price-bg">${{ total_price }}</span></td>
+              <td>
+                <div class="edit-action-sec gap-4 d-flex">
+                  <button type="button"><span><img src="{% static 'img/calendar-icon.png' %}" alt="calander"
+                        data-bs-toggle="modal" data-bs-target="#calendar-prod-pop"></span></button>
+                  <button type="button" class="delete-btn" data-bs-toggle="modal" data-bs-target="#proddelete-pop"
+                    data-cart-item-id="{{ cart_item_id }}">
+                    <span><img src="{% static 'img/delete-icon.png' %}" alt="delete"></span>
+                  </button>
+                </div>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        {% if vendor %}
+
+        <div class="card-price-sec d-flex align-items-end flex-column mt-2">
+          <h3>Transportation and other costs</h3>
+          <div class="amountprice-row d-flex py-2">
+            <div class="amount-column cmn-ligt-font">
+              <p class="mb-0">SubTotal:</p>
+            </div>
+            <div class="price-column cmn-blck-font" id="subtotal-{{ vendor.id }}">
+              <b class="mb-0">${{ data.subtotal }}</b>
+            </div>
+          </div>
+          <div class="amountprice-row d-flex py-2">
+            <div class="amount-column cmn-ligt-font">
+              <p class="mb-0">Discount:</p>
+            </div>
+            <div class="price-column cmn-blck-font" id="discount-{{ vendor.id }}">
+              <b class="mb-0">${{ data.discount }}</b>
+            </div>
+          </div>
+          <div class="amountprice-row d-flex py-2">
+            <div class="amount-column cmn-ligt-font">
+              <p class="mb-0">Tax:</p>
+            </div>
+            <div class="price-column cmn-blck-font"><b class="mb-0" id="tax-{{ vendor.id }}">${{ data.tax }}</b></div>
+          </div>
+          <div class="amountprice-row d-flex py-2">
+            <div class="amount-column cmn-ligt-font">
+              <p class="mb-0">Other:</p>
+            </div>
+            <div class="price-column cmn-blck-font" id="delivery_charge-{{ vendor.id }}">
+              <b class="mb-0">${{ data.delivery_fee }}</b>
+            </div>
+          </div>
+          <div class="amountprice-row d-flex py-2">
+            <div class="amount-column cmn-ligt-font">
+              <p class="mb-0">Total Price:</p>
+            </div>
+            <div class="price-column cmn-blck-font"><b class="mb-0" id="total-{{ vendor.id }}">${{ data.total }}</b>
+            </div>
+          </div>
+        </div>
+        {% endif %}
+
+      </div>
+      {% endfor %}
+      <div class="card-view-section">
+        <div class="row">
+          {% for cart_item in cart_items %}
+          <div class="col-12 col-md-6 col-lg-3 col-xl-3 col-xxl-3 mb-lg-0 mb-4">
+            <div class="card-custom position-relative">
+              <div class="card-img-hover position-relative">
+                <div class="crd-img">
+                  {% with photo=cart_item.product.productphoto_set.first %}
+                  <img src="{{ photo.product_photo.url }}" alt="product list">
+                  {% endwith %}
+                </div>
+                <div class="edit-action-hover">
+                  <div class="edit-action-sec gap-4 d-flex">
+                    <button type="button"><span class="d-flex align-items-center justify-content-center"><img
+                          src="{% static 'img/calendar-icon.png' %}" alt="calander"></span></button>
+                    <button type="button" class="delete-btn" data-bs-toggle="modal" data-bs-target="#proddelete-pop"
+                      data-cart-item-id="{{ cart_item.id }}">
+                      <span><img src="{% static 'img/delete-icon.png' %}" alt="delete"></span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                  <h4 class="card-title">{{ cart_item.product.product_title }}</h4>
+                  <!-- <p class="card-text">$1200.00</p> -->
+                </div>
+                <div class="price-crds d-flex justify-content-between align-items-center mb-4">
+                  <label class="card-title">Price</label>
+                  <span class="price-bg">${{ cart_item.product.price_transport.amount }}</span>
+                </div>
+                <div class="lastedit-crds d-flex justify-content-between align-items-center mb-4">
+                  <label class="card-title">Expected Delivery</label>
+                  <p>Jul 24, 2023 at 3:55 PM</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+      <div class="hr-line-small my-5"></div>
+    </div>
+    <!-- End inner body section -->
+
+  </div>
+  <!-- product footer section -->
+  <div class="footer-bottom flex-space">
+    <div class="last-saved">
+      <p>Order Summary: {{ product_count }} Products</p>
+    </div>
+    <div class="footer-rigt-sec d-flex gap-5">
+      {% if cart_items %}
+      <div class="total-picess align-items-center d-flex" id="grand-total">
+        <h3 class="mb-0">Total: ${{ grand_total }}</h3>
+      </div>
+      <div class="publish-now-btn">
+        <button class="red-btn" id="checkout-button">Order (Stripe)</button>
+        <button class="red-btn" id="cash-checkout-button">Order (Cash)</button>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+  <!-- End product footer section -->
+
+  <!-- Modal pop add Products delete-->
+  <div class="modal fade" id="proddelete-pop">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content custom-modal-pop">
+        <div class="modal-header">
+          <h5 class="modal-title">Products delete</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="custom-modal-inner text-center">
+            <img src="{% static 'img/delate-img.png' %}" alt="delate">
+            <p class="mt-5">Are you sure you want to delete the Products?</p>
+          </div>
+        </div>
+        <div class="modal-footer gap-4">
+          <button type="button" class="white-btn" data-bs-dismiss="modal"> Cancel</button>
+          <a href="#" id="delete-cart-item" class="red-btn">Yes</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Modal pop Request a Change calendar-->
+<div class="modal fade" id="calendar-prod-pop">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content custom-modal-pop">
+      <div class="modal-header">
+        <h5 class="modal-title">Request a Change</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="modal-inner-sec">
+          <div class="userimg-pop mb-5">
+            <img src="{% static 'img/avatar.png' %}" alt="avatar">
+          </div>
+          <div class="would-request mb-4">
+            <h3>What you would like to request?</h3>
+          </div>
+          <div class="img-vedio-sec-upload d-flex align-items-center gap-4">
+            <div class="img-upload-sec position-relative">
+              <div class="imgs-upload">
+                <div id="imagePreview" style="background-image: url('{% static 'img/dumy-imgs.png' %}')"></div>
+              </div>
+              <div class="avatar-edit">
+                <input type="file" id="imageUpload" accept=".png, .jpg, .jpeg">
+                <label for="imageUpload"><i class="bi bi-plus-lg"></i> </label>
+              </div>
+            </div>
+            <div class="vedio-uploads">
+              <div class="img-upload-sec position-relative">
+                <div class="imgs-upload">
+                  <div id="imagePreview1" style="background-image: url('{% static 'img/vedio-dummy.png' %}')"></div>
+                </div>
+                <div class="avatar-edit">
+                  <input type="file" id="imageUpload1" accept=".png, .jpg, .jpeg">
+                  <label for="imageUpload1"><i class="bi bi-plus-lg"></i> </label>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="hr-line-small mb-5 mt-4"></div>
+          <div class="delivery-time mb-5">
+            <p>Request a delivery data and time change.</p>
+          </div>
+          <div class="delivered-hour d-flex justify-content-between align-items-center">
+            <div class="delivered-label">
+              <p>Do you need it delivered in 12-24 hours? <i class="bi bi-exclamation-circle-fill"
+                  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Tooltip on top"></i></p>
+            </div>
+            <div class="delivered-switch">
+              <div class="cust-switch"> <label class="switch"><input type="checkbox" checked=""><span
+                    class="slider round"></span> </label> </div>
+            </div>
+          </div>
+          <div class="hr-line-small my-5"></div>
+          <div class="datetimefiled-sec">
+            <div class="datetime-filed position-relative mb-3">
+              <label class="form-label">Date</label>
+              <input type="date" class="form-control">
+            </div>
+            <div class="datetime-filed position-relative">
+              <label class="form-label">Time</label>
+              <input type="time" class="form-control">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer gap-4">
+        <button type="button" class="red-btn">Send Request</button>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+{% block tab %}
+
+<script>
+  $(document).ready(function () {
+    document.querySelectorAll('.delete-btn').forEach(btn => {
+      btn.addEventListener('click', function () {
+        const cartItemId = this.getAttribute('data-cart-item-id');
+        document.getElementById('delete-cart-item').href = `/delete-cart-item/${cartItemId}`;
+      });
+    });
+  });
+</script>
+
+<script>
+  $(document).ready(function () {
+    function getCookie(name) {
+      var cookieValue = null;
+      if (document.cookie && document.cookie !== '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+          var cookie = cookies[i].trim();
+          // Check if the cookie name matches the desired name
+          if (cookie.substring(0, name.length + 1) === (name + '=')) {
+            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+            break;
+          }
+        }
+      }
+      return cookieValue;
+    }
+
+    $('.qty-btn-minus, .qty-btn-plus').on('click', function () {
+      // Find the closest elements within the same table row
+      var row = $(this).closest('tr');
+      var cartItemId = parseInt(row.find('.cartItemId').val());
+      var productId = parseInt(row.find('.productId').val());
+      var supplierId = parseInt(row.find('.vendorId').val());
+      var updatedQuantity = parseInt(row.find('.input-qty').val());
+      var table = row.closest('table');
+      console.log(updatedQuantity);
+
+      var cartItemCountSpan = $('#cart_item_count');
+
+      $.ajax({
+        type: 'POST',
+        url: '/update-cart-quantity/' + cartItemId + '/',
+        data: { 'quantity': updatedQuantity, 'supplier_id': supplierId, 'product_id': productId },
+        dataType: 'json',
+        headers: { 'X-CSRFToken': getCookie('csrftoken') },  // Include CSRF token
+        success: function (data) {
+          // Update the HTML elements with the new data
+          document.querySelector(`#subtotal-${supplierId}`).innerHTML = `<b class="mb-0">$${data.subtotal}</b>`;
+          document.querySelector(`#discount-${supplierId}`).innerHTML = `<b class="mb-0">$${data.discount}</b>`;
+          document.querySelector(`#tax-${supplierId}`).innerHTML = `<b class="mb-0">$${data.tax}</b>`;
+          document.querySelector(`#delivery_fee-${supplierId}`).innerHTML = `<td>$${data.delivery_fee}</td>`;
+          document.querySelector(`#delivery_charge-${supplierId}`).innerHTML = `<b class="mb-0">$${data.delivery_fee}</b>`;
+          document.querySelector(`#total_price-${productId}`).innerHTML = `<span class="price-bg">$${data.total_price}</span>`;
+          document.querySelector(`#total-${supplierId}`).innerHTML = `<b class="mb-0">$${data.total}</b>`;
+          document.querySelector(`#grand-total`).innerHTML = `<h3 class="mb-0">Total: $${data.grand_total}</h3>`;
+
+          cartItemCountSpan.text(data.cart_item_count);
+        },
+        error: function (xhr, status, error) {
+          console.error('AJAX Error:', status, error);
+        }
+      });
+    });
+  });
+</script>
+<script src="https://js.stripe.com/v3/"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    // This code will run after the DOM has fully loaded
+    var publicKey = '{{ stripe_publishable_key }}';
+    var stripe = Stripe(publicKey);
+    var stripeCheckoutButton = document.getElementById('checkout-button');
+    var cashCheckoutButton = document.getElementById('cash-checkout-button')
+
+    stripeCheckoutButton.addEventListener('click', function () {
+      fetch('/create-checkout-session?type=stripe', {})
+        .then(response => response.json())
+        .then(session => {
+          return stripe.redirectToCheckout({ sessionId: session.session_id });
+        })
+        .then(result => {
+          if (result.error) {
+            alert(result.error.message);
+          }
+        })
+        .catch(error => {
+          console.log("Checking catch")
+          console.error('Error:', error);
+        });
+    });
+
+    cashCheckoutButton.addEventListener('click', function () {
+      fetch('/create-checkout-session?type=cash', {})
+        .then(response => response.json())
+        .then(result => {
+          if (result.error) {
+            alert(result.error);
+          }
+          else {
+            alert("Thank you for your cash order! You must organize payments in cash via GustoMarket directly.")
+            window.location.replace("http://127.0.0.1:3000/success?type=cash")
+            // window.location.replace("https://platform.gustomarket.co/success?type=cash")
+          }
+        })
+        .catch(error => {
+          console.log("Checking catch")
+          console.error('Error:', error);
+        });
+    });
+  });
+</script>
+
+{% endblock %}
