@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8" />
+	<title>GustoMarket Picklist</title>
+
+	<style>
+		@page{
+			margin: 0;
+		}
+
+		body{
+			padding:0;
+		}
+		.invoice-box {
+			max-width: 1000px;
+			margin: auto;
+			padding: 30px;
+			border: 1px solid #eee;
+			box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+			font-size: 16px;
+			line-height: 24px;
+			font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
+			color: #555;
+		}
+
+		.invoice-box table.body {
+			width: 100%;
+			text-align: left;
+			table-layout: fixed;
+		}
+
+		.invoice-box table td {
+			padding: 5px;
+			vertical-align: top;
+		}
+
+		/* .invoice-box table tr.top table td {
+			padding-bottom: 20px;
+		} */
+
+		/* .invoice-box table tr.top table td.title {
+			font-size: 45px;
+			line-height: 45px;
+			color: #333;
+		} */
+
+		/* .invoice-box table tr.information table td {
+			padding-bottom: 40px;
+		} */
+
+		.invoice-box table tr.heading td {
+			background: #eee;
+			border-bottom: 1px solid #ddd;
+			font-weight: bold;
+		}
+
+		/* .invoice-box table tr.details td {
+			padding-bottom: 20px;
+		} */
+
+		.invoice-box table tr.item td {
+			border-bottom: 1px solid #eee;
+		}
+
+		.invoice-box table tr.item.last td {
+			border-bottom: none;
+		}
+
+		.invoice-box table tr.total td:nth-child(7) {
+			border-top: 2px solid #eee;
+			font-weight: bold;
+		}
+
+		@media only screen and (max-width: 600px) {
+			.invoice-box table tr.top table td {
+				width: 100%;
+				display: block;
+				text-align: center;
+			}
+
+			.invoice-box table tr.information table td {
+				width: 100%;
+				display: block;
+				text-align: center;
+			}
+		}
+
+		/** RTL **/
+		.invoice-box.rtl {
+			direction: rtl;
+			font-family: Tahoma, 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
+		}
+
+		.invoice-box.rtl table {
+			text-align: right;
+		}
+
+		.invoice-box.rtl table tr td:nth-child(7) {
+			text-align: left;
+		}
+
+		.square {
+            width: 20px; /* Adjust the size as needed */
+            height: 20px; /* Adjust the size as needed */
+            border: 1px solid black;
+        }
+	</style>
+</head>
+
+<body>
+	<div class="invoice-box">
+		<table cellpadding="0" cellspacing="0">
+			<tr class="top">
+				<b style="font-size: 38px;"> GustoMarket Picklist</b>
+				<br><br>
+				<td>
+					<b>Buyer Info:</b><br>
+					BUYER_NAME<br />
+					BUYER_EMAIL<br />
+					BUYER_ADDR_LINE1<br />
+					BUYER_CITY, BUYER_STATE BUYER_ZIP
+				</td>
+				<td>
+					<br>
+					<b>&nbsp;&nbsp;Date Generated:</b> CURRENT_DATE <br>
+					<b>&nbsp;&nbsp;Order Number: </b>ORDER_ID
+				</td>
+				<td></td>
+			</tr>
+		</table>
+		<table class="body">
+			<tr class="heading">
+				<td>Item</td>
+				<td>Quantity</td>
+				<td>Unit</td>
+				<td>Picker</td>
+				<td>QA</td>
+				<td>Owner/Manager</td>
+			</tr>
+			DATA_GOES_HERE
+		</table>
+	</div>
+</body>
+
+</html>
