@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Invoice</title>
+    <style>
+
+        @page {
+            margin: 0;
+        }
+
+        @body {
+            padding: 0;
+        }
+        .invoice-box {
+            max-width: 1000px;
+            margin: auto;
+            padding: 30px;
+            border: 1px solid #eee;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+            font-size: 14px;
+            line-height: 20px;
+            font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
+            color: #555;
+        }
+        .invoice-box table {
+            width: 100%;
+            line-height: inherit;
+            text-align: left;
+            border-collapse: collapse;
+        }
+        .invoice-box table td {
+            padding: 3px;
+            vertical-align: top;
+        }
+        .invoice-box table tr td:nth-child(4) {
+            text-align: right;
+        }
+        .invoice-box table tr td:nth-child(5) {
+            text-align: right;
+        }
+        .invoice-box table tr.top table td {
+            padding-bottom: 10px;
+        }
+        .invoice-box table tr.top table td.title {
+            font-size: 45px;
+            line-height: 45px;
+            color: #333;
+        }
+        .invoice-box table tr.information table td {
+            padding-bottom: 20px;
+        }
+        .invoice-box table tr.heading td {
+            background: #eee;
+            border-bottom: 1px solid #ddd;
+            font-weight: bold;
+        }
+        .invoice-box table tr.item td {
+            border-bottom: 1px solid #eee;
+        }
+        .invoice-box table tr.item.last td {
+            border-bottom: none;
+        }
+        .invoice-box table tr.total td:nth-child(5) {
+            border-top: 2px solid #eee;
+            font-weight: bold;
+        }
+        .invoice-box table tr.item td.qt p {
+            font: bold;
+            background-color: #c7c8c9b4;
+            border: 1px solid #ccc;
+            border-radius: 8px; 
+            padding: 2px;
+            width: 50px;
+        }
+
+        .invoice-box table tr.item td {
+            margin: 0;
+            vertical-align: center;
+            text-align: left;
+        }
+        
+
+
+        @media only screen and (max-width: 600px) {
+            .invoice-box table tr.top table td {
+                width: 100%;
+                display: block;
+                text-align: center;
+            }
+            .invoice-box table tr.information table td {
+                width: 100%;
+                display: block;
+                text-align: center;
+            }
+        }
+        footer {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            text-align: right;
+            font-size: 12px;
+            color: #555;
+        }
+
+        
+    </style>
+</head>
+<body>
+    <div class="invoice-box">
+        <table cellpadding="0" cellspacing="0">
+            <p style="font-size: 28px;text-align: left;"><b> GustoMarket Invoice</b></p> 
+
+            <tr class="information">
+                <td colspan="3">
+                    <table>
+                        <tr>
+                            <b>SELLER<br></b>
+                            <td style="text-align:left; padding: 0; margin: 0; ">
+                                SELLER_COMPANY</br>
+                                SELLER_EMAIL</br></br>
+                            </td>   
+                            <td>
+                                <b>Order Number:</b> ORDER_ID<br>
+                                <b>Purchased On:</b> CURRENT_DATE
+                                </br>
+                            </td>                                    
+                        </tr>
+                        <tr>
+                            <td>
+                                <b>Buyer Billing Address</b><br>
+                                BUYER_NAME<br>
+                                BUYER_EMAIL<br>
+                                BUYER_ADDR_LINE1<br>
+                                BUYER_CITY, BUYER_STATE, BUYER_ZIP
+                            </td>
+                            <td>
+                                <b>Buyer Shipping Address</b><br>
+                                BUYER_ADDR_LINE1<br>
+                                BUYER_CITY, BUYER_STATE, BUYER_ZIP
+                                <br><br>
+                                
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <b>Due Date</b><br>
+                                DUE_DATE
+                            </td>
+                            <td>
+                                <b>Payment Terms</b><br>
+                                PAYMENT_TERMS
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+
+            <tr class="heading">
+                <td>Product</td>
+                <td>Quantity</td>
+                <td>Unit Price</td>
+                <td style="text-align: left;">Subtotal</td>
+            </tr> 
+
+			DATA_GOES_HERE
+        </table>
+        <p style="font-size: 18px; text-align: right"> <b>Grand Total: </b> GRAND_TOTAL </p>
+    </div>
+</body>
+</html>
