@@ -1,1 +1,193 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Purchase Order</title>
+    <style>
 
+        @page {
+            margin: 0;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+        }
+        .invoice-box {
+            max-width: 1000px;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #eee;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+            font-size: 14px;
+            line-height: 20px;
+            font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
+            color: #555;
+        }
+        .invoice-box table {
+            width: 100%;
+            line-height: inherit;
+            text-align: left;
+            border-collapse: collapse;
+        }
+        .invoice-box table td {
+            padding: 3px;
+            vertical-align: top;
+        }
+        .invoice-box table tr td:nth-child(4) {
+            text-align: right;
+        }
+        .invoice-box table tr td:nth-child(5) {
+            text-align: right;
+        }
+        .invoice-box table tr.top table td {
+            padding-bottom: 10px;
+        }
+        .invoice-box table tr.top table td.title {
+            font-size: 45px;
+            line-height: 45px;
+            color: #333;
+        }
+        .invoice-box table tr.information table td {
+            padding-bottom: 20px;
+        }
+        .invoice-box table tr.heading td {
+            background: #eee;
+            border-bottom: 1px solid #ddd;
+            font-weight: bold;
+        }
+        .invoice-box table tr.item td {
+            border-bottom: 1px solid #eee;
+        }
+        .invoice-box table tr.item.last td {
+            border-bottom: none;
+        }
+        .invoice-box table tr.total td:nth-child(5) {
+            border-top: 2px solid #eee;
+            font-weight: bold;
+        }
+        .invoice-box table tr.item td.qt p {
+            font: bold;
+            background-color: #c7c8c9b4;
+            border: 1px solid #ccc;
+            border-radius: 8px; 
+            padding: 2px;
+            width: 50px;
+            margin-left: 2px;
+            /* vertical-align: middle; */
+        }
+
+        .invoice-box table tr.item td.qt {
+            vertical-align: middle;
+        }
+        
+        @media only screen and (max-width: 600px) {
+            .invoice-box table tr.top table td {
+                width: 100%;
+                display: block;
+                text-align: center;
+            }
+            .invoice-box table tr.information table td {
+                width: 100%;
+                display: block;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="invoice-box">
+        <table cellpadding="0" cellspacing="0">
+            <tr>
+                <td><p style="font-size: 28px;text-align: left;"><b> GustoMarket Purchase <br>Order</b></p> </td>
+                <td>
+                    <p style="margin: 25px; font-style: italic;">
+                        **Note: This document is not an invoice. Invoice will be generated post delivery**
+                    </p>
+                </td>
+            </tr>
+            
+
+            <tr class="information">
+                <td colspan="3">
+                    <table>
+                        <tr>
+                            <td style="text-align:left; padding: 0; margin: 0; ">
+                                <b>SELLER_COMPANY</br></b>
+                                SELLER_EMAIL</br></br>
+                            </td>   
+                            <td>
+                                <b>Order Number:</b> ORDER_ID<br>
+                                <b>Purchased On:</b> CURRENT_DATE
+                                </br>
+                            </td>                                    
+                        </tr>
+                        <tr>
+                            <td>
+                                <b>Buyer Billing Address</b><br>
+                                BUYER_NAME<br>
+                                BUYER_EMAIL<br>
+                                BUYER_ADDR_LINE1<br>
+                                BUYER_CITY, BUYER_STATE, BUYER_ZIP
+                            </td>
+                            <td>
+                                <b>Buyer Shipping Address</b><br>
+                                BUYER_ADDR_LINE1<br>
+                                BUYER_CITY, BUYER_STATE, BUYER_ZIP
+                                <br><br>
+                                
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <b>Due Date</b><br>
+                                DUE_DATE
+                            </td>
+                            <td>
+                                <b>Payment Terms</b><br>
+                                PAYMENT_TERMS
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+
+            <tr class="heading">
+                <td class="qt"><p>Product</p></td>
+                <td class="qt"><p>Quantity Picked</p></td>       
+            </tr>
+            
+            DATA_GOES_HERE
+
+            <!-- <tr class="item">
+                <td>Eel fish (10oz)<br><small>Eel (10 oz)</small></td>
+                <td class="qt"><p>1 case</p></td>
+            </tr>
+            <tr class="item">
+                <td>Avocado 48ct<br><small>Avocado 48ct</small></td>
+                <td class="qt"><p>2 case</p></td>
+            </tr>
+            <tr class="item">
+                <td>Tempura Shrimp (100)<br><small>Tempura Shrimp (100pc/size 26/30)</small></td>
+                <td class="qt"><p>2 case</p></td>
+            </tr>
+            <tr class="item">
+                <td>Ginger (white)<br><small>Ginger(w)</small></td>
+                <td class="qt"><p>2 case</p></td>
+            </tr>
+            <tr class="item">
+                <td>GL807<br><small>GL 807 (550 ct)</small></td>
+                <td class="qt"><p>1 case</p></td>
+            </tr>
+            <tr class="item">
+                <td>Ohba<br><small>Ohba 葉</small></td>
+                <td class="qt"><p>1 ea.</p></td>
+            </tr>
+            <tr class="item">
+                <td>Fresh Salmon (Scottish)<br><small>Salmon (Scottish) 三文魚 AQUACULTURED</small></td>
+                <td class="qt"><p>49.79 lb</p></td>
+            </tr> -->
+        </table>
+    </div>
+</body>
+</html>
